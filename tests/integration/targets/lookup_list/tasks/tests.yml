@@ -1,0 +1,100 @@
+---
+- name: Tests
+  vars:
+    kwargs:
+      url_: "{{ netbox_url }}"
+      token_: "{{ netbox_token }}"
+  block:
+    - name: Lookup with no filters
+      set_fact:
+        result: "{{ q('devon_mar.nblists.list', 'prefixes', **kwargs) }}"
+
+    - assert:
+        that:
+          - result | type_debug == 'list'
+          - (result | sort) == (netbox_prefixes | sort)
+        fail_msg: "{{ result }}"
+
+    - name: Lookup with 1 filter, string
+      set_fact:
+        result: "{{ q('devon_mar.nblists.list', 'ip-addresses', parent='2001:db8::/64', **kwargs) }}"
+
+    - assert:
+        that:
+          - result | type_debug == 'list'
+          - result | length == 2
+          - "'2001:db8::1/128' in result"
+          - "'2001:db8::2/128' in result"
+        fail_msg: "{{ result }}"
+
+    - name: Lookup with filter, string, bool, int
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'ip-addresses', parent='2001:db8::/64', as_cidr=false, summarize=false, family=6, **kwargs) }}"
+
+    - assert:
+        that:
+          - result | type_debug == 'list'
+          - result | length == 2
+          - "'2001:db8::1' in result"
+          - "'2001:db8::2' in result"
+        fail_msg: "{{ result }}"
+
+    - name: Lookup with filter, string array
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'ip-addresses', parent=['192.0.2.0/24', '198.51.100.0/24'], summarize=False, **kwargs) }}"
+
+    - assert:
+        that:
+          - result | type_debug == 'list'
+          - result | length == 4
+          - "'192.0.2.1/32' in result"
+          - "'192.0.2.2/32' in result"
+          - "'198.51.100.1/32' in result"
+          - "'198.51.100.2/32' in result"
+        fail_msg: "{{ result }}"
+
+    - name: Lookup with multiple endpoints
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'aggregates', 'prefixes', **kwargs) }}"
+
+    - assert:
+        that:
+          - result | type_debug == 'list'
+          - (result | sort) == ((netbox_aggregates + netbox_prefixes) | sort)
+        fail_msg: "{{ result }}"
+
+    - name: Empty list with allow_empty_=False
+      ignore_errors: true
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'ip-addresses', parent='192.168.0.0/24', allow_empty_=False, **kwargs) }}"
+      register: _allow_empty
+
+    - assert:
+        that:
+          - _allow_empty is failed
+
+    - name: Empty list with allow_empty_=True
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'ip-addresses', parent='192.168.0.0/24', allow_empty_=True, **kwargs) }}"
+      register: _allow_empty
+
+    - assert:
+        that:
+          - result | type_debug == 'list'
+          - result | length == 0
+
+    - name: Empty term error
+      ignore_errors: true
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'prefixes', '', **kwargs) }}"
+      register: _empty_term
+
+    - assert:
+        that:
+          - _empty_term is failed

@@ -1,0 +1,28 @@
+---
+- name: Get all objects ({{ api_endpoint }})
+  uri:
+    url: "{{ netbox_url }}/api/{{ api_endpoint }}/?brief=1"
+    method: GET
+    return_content: true
+    headers: "{{ netbox_headers }}"
+  register: _endpoint_objects
+
+- name: Build request body ({{ api_endpoint }})
+  set_fact:
+    _delete_body: >-
+      {{
+        (_delete_body | default([]))
+        + [{'id': item}]
+      }}
+  with_items: "{{ _endpoint_objects.json.results | map(attribute='id') }}"
+
+- name: Delete all objects ({{ api_endpoint }})
+  changed_when: true
+  uri:
+    url: "{{ netbox_url }}/api/{{ api_endpoint }}/"
+    method: DELETE
+    status_code: 204
+    headers: "{{ netbox_headers }}"
+    body_format: json
+    body: "{{ _delete_body }}"
+  when: _delete_body is defined

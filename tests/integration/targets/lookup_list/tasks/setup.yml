@@ -1,0 +1,54 @@
+---
+- name: Create RIR
+  changed_when: true
+  uri:
+    url: "{{ netbox_url }}/api/ipam/rirs/"
+    method: POST
+    status_code: 201
+    body_format: json
+    return_content: true
+    headers: "{{ netbox_headers }}"
+    body:
+      name: RFC1918
+      slug: rfc1918
+      is_private: true
+
+- name: Create aggregates
+  changed_when: true
+  uri:
+    url: "{{ netbox_url }}/api/ipam/aggregates/"
+    method: POST
+    status_code: 201
+    body_format: json
+    headers: "{{ netbox_headers }}"
+    body:
+      prefix: "{{ item }}"
+      rir:
+        slug: rfc1918
+  with_items: "{{ netbox_aggregates }}"
+
+- name: Create prefixes
+  changed_when: true
+  uri:
+    url: "{{ netbox_url }}/api/ipam/prefixes/"
+    method: POST
+    status_code: 201
+    body_format: json
+    headers: "{{ netbox_headers }}"
+    body:
+      prefix: "{{ item }}"
+      rir:
+        slug: rfc1918
+  with_items: "{{ netbox_prefixes }}"
+
+- name: Create IP addresses
+  changed_when: true
+  uri:
+    url: "{{ netbox_url }}/api/ipam/ip-addresses/"
+    method: POST
+    status_code: 201
+    body_format: json
+    headers: "{{ netbox_headers }}"
+    body:
+      address: "{{ item }}"
+  with_items: "{{ test_net_ips_1 + test_net_ips_2 + test_net_ips_3 + ipv6_doc_ips }}"

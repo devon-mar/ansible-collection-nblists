@@ -1,0 +1,19 @@
+---
+- name: Set facts
+  set_fact:
+    netbox_headers:
+      Authorization: "Token {{ netbox_token }}"
+
+- include_tasks: cleanup.yml
+  with_items:
+    - ipam/prefixes
+    - ipam/aggregates
+    - ipam/rirs
+    - ipam/ip-addresses
+    - extras/tags
+  loop_control:
+    loop_var: api_endpoint
+
+- import_tasks: setup.yml
+
+- import_tasks: tests.yml
