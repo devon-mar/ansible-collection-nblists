@@ -207,6 +207,10 @@ jobs:
             python: "2.6"
 
     steps:
+      - name: Setup NetBox
+        run: |
+          ./tests/integration/targets/setup_netbox_docker/setup.sh
+
       - name: >-
           Perform integration testing against Ansible version ${{ matrix.ansible }} under Python ${{ matrix.python }}
         # See the documentation for the following GitHub action on
