@@ -1,4 +1,5 @@
 /tests/output/
+/tests/integration/targets/setup_netbox_docker/files/output/
 /changelogs/.plugin-cache.yaml
 
 # Byte-compiled / optimized / DLL files

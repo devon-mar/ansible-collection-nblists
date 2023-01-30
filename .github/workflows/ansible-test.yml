@@ -207,6 +207,8 @@ jobs:
             python: "2.6"
 
     steps:
+      - uses: actions/checkout@v3
+
       - name: Setup NetBox
         run: |
           ./tests/integration/targets/setup_netbox_docker/setup.sh
