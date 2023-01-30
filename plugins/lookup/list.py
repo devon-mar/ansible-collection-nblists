@@ -1,3 +1,6 @@
+# Copyright: Devon Mar (@devon-mar)
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 # python 3 headers, required if submitting to Ansible
 from __future__ import absolute_import, division, print_function
 
@@ -14,48 +17,48 @@ from ansible.utils.display import Display
 __metaclass__ = type
 
 DOCUMENTATION = """
-  lookup: list
-  author: Devon Mar
-  version_added: "0.1.0"
-  short_description: Returns an array of IPs/prefixes.
-  description:
-      - This lookup returns IPs/prefixes from the NetBox lists plugin for NetBox.
-  options:
-    _terms:
-      description: The NetBox lists endpoint(s).
-      required: True
-    url_:
-      description: The URL to the NetBox instance with the lists plugin.
-      type: str
-      required: true
-      env:
-        - name: NETBOX_API
-        - name: NETBOX_URL
-    token_:
-      description: The NetBox API token.
-      type: str
-      vars:
-        - name: netbox_token
-      env:
-        - name: NETBOX_TOKEN
-        - name: NETBOX_API_TOKEN
-    lists_path_:
-      description: Path to the Netbox lists API root. To be appended to I(url_).
-      type: str
-      default: "/api/plugins/lists/"
-      env:
-        - name: NETBOX_LISTS_PATH
-    allow_empty_:
-      type: bool
-      default: False
-      description: If C(false), an exception will be raised if the returned list is empty.
-      env:
-        - name: NETBOX_LISTS_ALLOW_EMPTY
-    key_value:
-      description:
-        - Arbitrary C(key=value) pairs to be passed to NetBox lists as filters.
-        - C(key_value) is not an actual option for this lookup plugin.
-      type: dict
+lookup: list
+author: Devon Mar
+version_added: "0.1.0"
+short_description: Returns an array of IPs/prefixes
+description:
+  - This lookup returns IPs/prefixes from the NetBox lists plugin for NetBox.
+options:
+  _terms:
+    description: The NetBox lists endpoint(s).
+    required: True
+  url_:
+    description: The URL to the NetBox instance with the lists plugin.
+    type: str
+    required: true
+    env:
+      - name: NETBOX_API
+      - name: NETBOX_URL
+  token_:
+    description: The NetBox API token.
+    type: str
+    vars:
+      - name: netbox_token
+    env:
+      - name: NETBOX_TOKEN
+      - name: NETBOX_API_TOKEN
+  lists_path_:
+    description: Path to the Netbox lists API root. To be appended to I(url_).
+    type: str
+    default: "/api/plugins/lists/"
+    env:
+      - name: NETBOX_LISTS_PATH
+  allow_empty_:
+    type: bool
+    default: False
+    description: If C(false), an exception will be raised if the returned list is empty.
+    env:
+      - name: NETBOX_LISTS_ALLOW_EMPTY
+  key_value:
+    description:
+      - Arbitrary C(key=value) pairs to be passed to NetBox lists as filters.
+      - C(key_value) is not an actual option for this lookup plugin.
+    type: dict
 """
 
 RETURN = r"""
