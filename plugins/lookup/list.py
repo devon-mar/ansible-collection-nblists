@@ -4,16 +4,6 @@
 # python 3 headers, required if submitting to Ansible
 from __future__ import absolute_import, division, print_function
 
-import json
-from urllib.parse import urlencode, urljoin
-
-from ansible.errors import AnsibleError, AnsibleParserError
-from ansible.module_utils._text import to_native
-from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
-from ansible.module_utils.urls import ConnectionError, SSLValidationError, open_url
-from ansible.plugins.lookup import LookupBase
-from ansible.utils.display import Display
-
 __metaclass__ = type
 
 DOCUMENTATION = """
@@ -68,6 +58,17 @@ _raw:
   description:
     - The list of IPs/prefixes.
 """
+
+
+import json
+from urllib.parse import urlencode, urljoin
+
+from ansible.errors import AnsibleError, AnsibleParserError
+from ansible.module_utils._text import to_native
+from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
+from ansible.module_utils.urls import ConnectionError, SSLValidationError, open_url
+from ansible.plugins.lookup import LookupBase
+from ansible.utils.display import Display
 
 display = Display()
 
