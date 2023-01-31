@@ -1,0 +1,15 @@
+---
+- name: Run docker-compose down -v
+  command:
+    argv:
+      - docker-compose
+      - "-p"
+      - netbox
+      - down
+      - "-v"
+    chdir: "{{ output_dir }}"
+
+- name: Ensure the output dir is absent
+  file:
+    path: "{{ output_dir }}"
+    state: absent

@@ -1,0 +1,40 @@
+---
+- name: Ensure the output dir is present
+  file:
+    path: "{{ output_dir }}"
+    state: directory
+
+- name: Ensure netbox-docker is cloned
+  git:
+    repo: https://github.com/netbox-community/netbox-docker.git
+    version: release
+    force: true
+    depth: 1
+    dest: "{{ output_dir }}"
+
+- name: Ensure files are copied
+  changed_when: true
+  copy:
+    src: "{{ item }}"
+    dest: "{{ output_dir }}/{{ item }}"
+  with_items:
+    - Dockerfile-Plugins
+    - plugin_requirements.txt
+    - configuration/plugins.py
+
+- name: Template docker-compose.override.yml
+  template:
+    src: docker-compose.override.yml.j2
+    dest: "{{ output_dir }}/docker-compose.override.yml"
+  vars:
+    github_docker_network: "{{ lookup('env', 'GITHUB_DOCKER_NETWORK') }}"
+
+- name: Run docker-compose up -d
+  command:
+    argv:
+      - docker-compose
+      - "-p"
+      - netbox
+      - up
+      - "-d"
+    chdir: "{{ output_dir }}"

@@ -235,6 +235,11 @@ jobs:
           # https://github.com/ansible-community/ansible-test-gh-action#pull-request-change-detection
           # pull-request-change-detection: true
 
+      - name: Cleanup containers
+        run: |
+          ./tests/integration/targets/setup_netbox_docker/setup.sh
+        env:
+          DO_CLEANUP: "true"
   check: # This job does nothing and is only used for the branch protection
     # or multi-stage CI jobs, like making sure that all tests pass before
     # a publishing job is started.
