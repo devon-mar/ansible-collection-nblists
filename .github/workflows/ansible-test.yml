@@ -135,10 +135,6 @@ jobs:
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: units
-          # OPTIONAL If your unit tests require code
-          # from other collections, install them like this
-          test-deps: >-
-            ansible.netcommon ansible.utils
           # OPTIONAL If set to true, will test only against changed files,
           # which should improve CI performance. See limitations on
           # https://github.com/ansible-community/ansible-test-gh-action#pull-request-change-detection
@@ -164,6 +160,10 @@ jobs:
           '["stable-2.9", "stable-2.10", "stable-2.11"]'
       ), matrix.ansible) && 'ubuntu-20.04' || 'ubuntu-latest' }}
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
+    services:
+      # So that the GitHub network is created
+      sleep:
+        image: wardsco/sleep
     strategy:
       fail-fast: false
       matrix:
@@ -212,6 +212,8 @@ jobs:
       - name: Setup NetBox
         run: |
           ./tests/integration/targets/setup_netbox_docker/setup.sh
+        env:
+          GITHUB_DOCKER_NETWORK: ${{ job.container.network }}
 
       - name: >-
           Perform integration testing against Ansible version ${{ matrix.ansible }} under Python ${{ matrix.python }}
@@ -224,13 +226,14 @@ jobs:
           # pre-test-cmd:
           target-python-version: ${{ matrix.python }}
           testing-type: integration
+          pre-test-cmd: cp ./tests/integration/integration_config_gha.yml ./tests/integration/integration_config.yml
           # OPTIONAL If your integration tests require code
           # from other collections, install them like this
-          test-deps: ansible.netcommon
+          # test-deps: ansible.netcommon
           # OPTIONAL If set to true, will test only against changed files,
           # which should improve CI performance. See limitations on
           # https://github.com/ansible-community/ansible-test-gh-action#pull-request-change-detection
-          pull-request-change-detection: true
+          # pull-request-change-detection: true
 
   check: # This job does nothing and is only used for the branch protection
     # or multi-stage CI jobs, like making sure that all tests pass before

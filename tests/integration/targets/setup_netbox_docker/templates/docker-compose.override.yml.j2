@@ -11,13 +11,39 @@ services:
     healthcheck:
       start_period: 180s
     image: netbox:latest-plugins
+{% if github_docker_network %}
+    container_name: netbox
+    networks:
+      - github
+{% endif %}
   netbox-worker:
     image: netbox:latest-plugins
     build:
       context: .
       dockerfile: Dockerfile-Plugins
+{% if github_docker_network %}
+    networks:
+      - github
+{% endif %}
   netbox-housekeeping:
     image: netbox:latest-plugins
     build:
       context: .
       dockerfile: Dockerfile-Plugins
+{% if github_docker_network %}
+    networks:
+      - github
+  postgres:
+    networks:
+      - github
+  redis:
+    networks:
+      - github
+  redis-cache:
+    networks:
+      - github
+networks:
+  github:
+    name: "{{ github_docker_network }}"
+    external: true
+{% endif %}

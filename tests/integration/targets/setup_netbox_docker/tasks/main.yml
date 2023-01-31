@@ -22,10 +22,16 @@
     src: "{{ item }}"
     dest: "{{ output_dir }}/{{ item }}"
   with_items:
-    - docker-compose.override.yml
     - Dockerfile-Plugins
     - plugin_requirements.txt
     - configuration/plugins.py
+
+- name: Template docker-compose.override.yml
+  template:
+    src: docker-compose.override.yml.j2
+    dest: "{{ output_dir }}/docker-compose.override.yml"
+  vars:
+    github_docker_network: "{{ lookup('env', 'GITHUB_DOCKER_NETWORK') }}"
 
 - name: Run docker-compose up -d
   command:
