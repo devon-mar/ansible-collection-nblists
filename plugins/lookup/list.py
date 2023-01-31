@@ -17,8 +17,8 @@ from ansible.utils.display import Display
 __metaclass__ = type
 
 DOCUMENTATION = """
-lookup: list
-author: Devon Mar
+name: list
+author: Devon Mar (@devon-mar)
 version_added: "0.1.0"
 short_description: Returns an array of IPs/prefixes
 description:
