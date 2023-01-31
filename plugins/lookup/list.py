@@ -92,7 +92,7 @@ class LookupModule(LookupBase):
         if netbox_token:
             headers["Authorization"] = "Token %s" % netbox_token
 
-        if any(len(term) == 0 for term in terms):
+        if any(len(term) == 0 or term == "/" for term in terms):
             raise AnsibleError("Received empty term")
 
         lists_url = urljoin(netbox_url, lists_path)
@@ -110,27 +110,16 @@ class LookupModule(LookupBase):
 
             try:
                 response = open_url(url, headers=headers)
-            except HTTPError as e:
+            except Exception as e:
                 raise AnsibleError(
-                    "Received HTTP error for %s : %s" % (url, to_native(e))
+                    "Error making request to '%s': %s" % (url, to_native(e))
                 )
-            except URLError as e:
-                raise AnsibleError(
-                    "Failed lookup url for %s : %s" % (url, to_native(e))
-                )
-            except SSLValidationError as e:
-                raise AnsibleError(
-                    "Error validating the server's certificate for %s: %s"
-                    % (url, to_native(e))
-                )
-            except ConnectionError as e:
-                raise AnsibleError("Error connecting to %s: %s" % (url, to_native(e)))
 
             try:
                 parsed = json.loads(response.read())
             except Exception as e:
                 raise AnsibleParserError(
-                    "Could not parse JSON response for %s: %s" % (url, to_native(e))
+                    "Could not parse JSON response for '%s': %s" % (url, to_native(e))
                 )
 
             if not isinstance(parsed, list):

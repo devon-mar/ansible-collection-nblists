@@ -98,3 +98,58 @@
     - assert:
         that:
           - _empty_term is failed
+
+    - name: Empty term error 2
+      ignore_errors: true
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'prefixes', '/', **kwargs) }}"
+      register: _empty_term
+
+    - assert:
+        that:
+          - _empty_term is failed
+
+    - name: Not JSON
+      ignore_errors: true
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'aggregates', lists_path_='ipam/abc', **kwargs) }}"
+      register: _not_json
+
+    - assert:
+        that:
+          - _not_json is failed
+
+    - name: Invalid tag 404
+      ignore_errors: true
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'tags/404', **kwargs) }}"
+      register: _tag_404
+
+    - assert:
+        that:
+          - _tag_404 is failed
+
+    - name: Wrong token 403
+      ignore_errors: true
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'aggregates', token_='wrong', url_=kwargs['url_']) }}"
+      register: _wrong_token
+
+    - assert:
+        that:
+          - _wrong_token is failed
+
+    - name: Wrong URL
+      ignore_errors: true
+      set_fact:
+        result:
+          "{{ q('devon_mar.nblists.list', 'aggregates', url_='http://localhost:8000', token_=kwargs['token_']) }}"
+      register: _wrong_token
+
+    - assert:
+        that:
+          - _wrong_token is failed
