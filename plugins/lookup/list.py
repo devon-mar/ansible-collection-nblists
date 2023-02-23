@@ -65,8 +65,7 @@ from urllib.parse import urlencode, urljoin
 
 from ansible.errors import AnsibleError, AnsibleParserError
 from ansible.module_utils._text import to_native
-from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
-from ansible.module_utils.urls import ConnectionError, SSLValidationError, open_url
+from ansible.module_utils.urls import open_url
 from ansible.plugins.lookup import LookupBase
 from ansible.utils.display import Display
 
