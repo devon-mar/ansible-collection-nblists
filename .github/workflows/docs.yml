@@ -33,6 +33,7 @@ jobs:
         run: |
           mkdir build
           antsibull-docs sphinx-init --use-current --fail-on-error --dest-dir build devon_mar.nblists
+          cd build
           pip install -r requirements.txt
           ./build.sh
         env:
