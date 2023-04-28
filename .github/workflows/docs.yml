@@ -2,8 +2,8 @@
 # https://github.com/ansible-community/github-docs-build/blob/main/samples/push-with-publish-to-gh-pages.yml
 name: Collection Docs
 concurrency:
-  group: docs-push-${{ github.sha }}
-  cancel-in-progress: true
+  group: collection-docs
+  cancel-in-progress: false
 on:
   push:
     branches:
@@ -36,3 +36,6 @@ jobs:
         uses: actions/upload-pages-artifact@v1.0.8
         with:
           path: html
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
