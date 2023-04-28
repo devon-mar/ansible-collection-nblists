@@ -31,7 +31,7 @@ jobs:
 
       - name: Build docs
         run: |
-          ./${{ github.workspace }}/ansible_collections/devon_mar/nblists/docs/build.sh
+          ./ansible_collections/devon_mar/nblists/docs/build.sh
         env:
           ANSIBLE_COLLECTIONS_PATHS: ${{ github.workspace }}/ansible_collections
 
