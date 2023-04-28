@@ -27,8 +27,6 @@ options:
   token_:
     description: The NetBox API token.
     type: str
-    vars:
-      - name: netbox_token
     env:
       - name: NETBOX_TOKEN
       - name: NETBOX_API_TOKEN
@@ -59,6 +57,34 @@ _raw:
     - The list of IPs/prefixes.
 """
 
+EXAMPLES = r"""
+- name: Get all NetBox IP addresses with the tag 'special'
+  ansible.builtin.debug:
+    msg: "{{ q('devon_mar.nblists.list', 'ip-addresses', tag='special') }}"
+
+- name: Manually specify a token and URL.
+  ansible.builtin.debug:
+    msg: "{{ q('devon_mar.nblists.list', 'ip-addresses', tag='special', url_='https://netbox.example.com', token_='abc123') }}"
+
+# Build an ACL using all NetBox prefixes with the role 'data'
+- name: Build ACL 10
+  ansible.builtin.set_fact:
+    acl_10_aces: "{{ acl_10_aces | default([]) + ace }}"
+  vars:
+    ace:
+      - grant: permit
+        source:
+          address: "{{ item | ansible.utils.ipaddr('network') }}"
+          wildcard_bits: "{{ item | ansible.utils.ipaddr('wildcard') }}"
+  loop: "{{ q('devon_mar.nblists.list', 'prefixes', role='data') }}"
+- name: Ensure ACLs are configured
+  cisco.ios.ios_acls:
+    config:
+      - afi: ipv4
+        acls:
+          - name: 10
+            aces: "{{ acl_10_aces }}"
+"""
 
 import json
 from urllib.parse import urlencode, urljoin
