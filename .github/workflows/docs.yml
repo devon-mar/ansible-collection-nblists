@@ -30,7 +30,8 @@ jobs:
         run: pip install antsibull-docs
 
       - name: Build docs
-        run: mkdir build
+        run: |
+          mkdir build
           antsibull-docs sphinx-init --use-current --fail-on-error --dest-dir build devon_mar.nblists
           pip install -r requirements.txt
           ./build.sh
