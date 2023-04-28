@@ -1,0 +1,35 @@
+---
+# https://github.com/ansible-community/github-docs-build/blob/main/samples/push-with-publish-to-gh-pages.yml
+name: Collection Docs
+concurrency:
+  group: docs-push-${{ github.sha }}
+  cancel-in-progress: true
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 13 * * *"
+
+jobs:
+  build-docs:
+    permissions:
+      contents: read
+    name: Build Ansible Docs
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@main
+    with:
+      init-lenient: false
+      init-fail-on-error: true
+
+  publish-docs-gh-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download the artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ needs.build-docs.outputs.artifact-name }}
+          path: html
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v1.0.8
+        with:
+          path: html
