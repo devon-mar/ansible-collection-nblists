@@ -12,7 +12,7 @@ author: Devon Mar (@devon-mar)
 version_added: "0.1.0"
 short_description: Returns an array of IPs/prefixes
 description:
-  - This lookup returns IPs/prefixes from the NetBox lists plugin for NetBox.
+  - This lookup returns IPs/prefixes from the L(NetBox lists,https://github.com/devon-mar/netbox-lists) plugin for L(NetBox,https://github.com/netbox-community/netbox).
 options:
   _terms:
     description: The NetBox lists endpoint(s).
