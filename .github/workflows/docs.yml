@@ -24,6 +24,9 @@ jobs:
 
   publish-docs:
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     needs:
       - build-docs
     steps:
