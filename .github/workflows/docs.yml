@@ -11,6 +11,9 @@ on:
   schedule:
     - cron: "0 13 * * *"
 
+env:
+  CHECKOUT_PATH: ${{ github.workspace }}/ansible_collections/devon_mar/nblists
+
 jobs:
   build-publish-docs:
     runs-on: ubuntu-latest
@@ -20,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          path: ${{ github.workspace }}/ansible_collections/devon_mar/nblists
+          path: ${{ env.CHECKOUT_PATH }}
 
       - uses: actions/setup-python@v4
         with:
@@ -29,18 +32,23 @@ jobs:
       - name: Install antsibull-docs
         run: pip install antsibull-docs
 
+      - name: Install docs requirements
+        run: |
+          pip install -r requirements.txt
+        working-directory: ${{ env.CHECKOUT_PATH }}/docs/
+
       - name: Build docs
         run: |
           pip install -r requirements.txt
           ./build.sh
-        working-directory: ${{ github.workspace }}/ansible_collections/devon_mar/nblists/docs/
+        working-directory: ${{ env.CHECKOUT_PATH }}/docs/
         env:
           ANSIBLE_COLLECTIONS_PATHS: ${{ github.workspace }}/ansible_collections
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v1.0.8
         with:
-          path: build/build/html
+          path: ${{ env.CHECKOUT_PATH }}/docs/build/html/
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
