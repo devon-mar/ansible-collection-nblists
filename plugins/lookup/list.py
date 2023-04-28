@@ -12,10 +12,15 @@ author: Devon Mar (@devon-mar)
 version_added: "0.1.0"
 short_description: Returns an array of IPs/prefixes
 description:
-  - This lookup returns IPs/prefixes from the L(NetBox lists,https://github.com/devon-mar/netbox-lists) plugin for L(NetBox,https://github.com/netbox-community/netbox).
+  - >-
+    This lookup returns IPs/prefixes from the L(NetBox lists,https://github.com/devon-mar/netbox-lists) plugin for
+    L(NetBox,https://github.com/netbox-community/netbox).
 options:
   _terms:
-    description: The NetBox lists endpoint(s).
+    description:
+      - The NetBox lists endpoint(s). For example, C(ip-addresses), C(prefixes), C(tags/<tag-slug>) or C(devices).
+      - This is the part that comes after C(https://<your NetBox URL>/api/plugins/lists/).
+      - See the plugin section of the API documentation of your NetBox documentation for all endpoints.
     required: True
   url_:
     description: The URL to the NetBox instance with the lists plugin.
