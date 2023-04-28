@@ -20,7 +20,7 @@ options:
     description:
       - The NetBox lists endpoint(s). For example, C(ip-addresses), C(prefixes), C(tags/<tag-slug>) or C(devices).
       - This is the part that comes after C(https://<your NetBox URL>/api/plugins/lists/).
-      - See the plugin section of the API documentation of your NetBox documentation for all endpoints.
+      - See the plugin section of the API documentation of your NetBox instance for all endpoints.
     required: True
   url_:
     description: The URL to the NetBox instance with the lists plugin.
