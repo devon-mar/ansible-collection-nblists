@@ -31,11 +31,7 @@ jobs:
 
       - name: Build docs
         run: |
-          mkdir build
-          antsibull-docs sphinx-init --use-current --fail-on-error --dest-dir build devon_mar.nblists
-          cd build
-          pip install -r requirements.txt
-          ./build.sh
+          ./${{ github.workspace }}/ansible_collections/devon_mar/nblists/docs/build.sh
         env:
           ANSIBLE_COLLECTIONS_PATHS: ${{ github.workspace }}/ansible_collections
 
