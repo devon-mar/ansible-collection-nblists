@@ -33,7 +33,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           ./build.sh
-        working-directory: ${{ github.workspace }}/ansible_collections/docs/
+        working-directory: ${{ github.workspace }}/ansible_collections/devon_mar/nblists/docs/
         env:
           ANSIBLE_COLLECTIONS_PATHS: ${{ github.workspace }}/ansible_collections
 
