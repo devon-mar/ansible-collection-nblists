@@ -1,1 +1,13 @@
-releases: {}
+ancestor: null
+releases:
+  0.1.0:
+    changes:
+      release_summary: First release!
+    fragments:
+    - 001-release.yml
+    plugins:
+      lookup:
+      - description: Returns an array of IPs/prefixes
+        name: list
+        namespace: null
+    release_date: '2023-05-02'

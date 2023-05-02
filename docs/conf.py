@@ -9,8 +9,8 @@
 project = "ansible-collection-nblists"
 copyright = "Devon Mar"
 
-title = "nblists Collection Documentation"
-html_short_title = "nblists Collection Documentation"
+title = "NetBox Lists Collection Documentation"
+html_short_title = "NetBox Lists Collection Documentation"
 
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.intersphinx", "sphinx_antsibull_ext"]
 

@@ -23,7 +23,7 @@ options:
       - See the plugin section of the API documentation of your NetBox instance for all endpoints.
     required: True
   url_:
-    description: The URL to the NetBox instance with the lists plugin.
+    description: The URL to the NetBox instance with the Lists plugin.
     type: str
     required: true
     env:
@@ -36,7 +36,7 @@ options:
       - name: NETBOX_TOKEN
       - name: NETBOX_API_TOKEN
   lists_path_:
-    description: Path to the Netbox lists API root. To be appended to I(url_).
+    description: Path to the Netbox Lists API root. To be appended to I(url_).
     type: str
     default: "/api/plugins/lists/"
     env:

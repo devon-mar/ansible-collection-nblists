@@ -1,0 +1,44 @@
+---
+name: Ansible Galaxy Publish
+
+"on":
+  release:
+    types: [published]
+
+env:
+  VERSION: ${{ github.event.release.tag_name }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.x
+
+      - name: Install ansible-core
+        run: pip install ansible-core
+
+      - name: Create ansible.cfg
+        run: |
+          tee ~/.ansible.cfg <<EOF
+          [galaxy]
+          server_list = release_galaxy
+
+          [galaxy_server.release_galaxy]
+          url = https://galaxy.ansible.com/
+          EOF
+
+      - name: Make sure the release tag matches what's in galaxy.yml
+        run: |
+          grep "^version: ${VERSION#v}\$" galaxy.yml
+
+      - name: Build the collection
+        run: ansible-galaxy collection build
+
+      - name: Publish the collection
+        run: ansible-galaxy collection publish devon_mar-nblists-${VERSION#v}.tar.gz
+        env:
+          ANSIBLE_GALAXY_SERVER_RELEASE_GALAXY_TOKEN: ${{ secrets.GALAXY_TOKEN }}
