@@ -1,4 +1,4 @@
-# nblists Collection for Ansible
+# NetBox Lists Collection for Ansible
 
 This collection contains a single lookup plugin which provides easy access to the [NetBox lists plugin](https://github.com/devon-mar/netbox-lists).
 
