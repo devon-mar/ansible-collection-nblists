@@ -50,7 +50,8 @@ options:
   key_value:
     description:
       - Arbitrary C(key=value) pairs to be passed to NetBox lists as filters.
-      - C(key_value) is not an actual option for this lookup plugin.
+      - I(key_value) is not an actual option for this lookup plugin.
+      - Use a C(list) or C(tuple) as the value to use a filter more than once.
     type: dict
 """
 
@@ -134,6 +135,13 @@ class LookupModule(LookupBase):
             )
 
             if filters:
+                url_filters = []
+                for k, v in filters.items():
+                    if isinstance(v, (list, tuple)):
+                        url_filters.extend((k, x) for x in v)
+                    else:
+                        url_filters.append((k, v))
+
                 url += "?" + urlencode(filters, doseq=True)
 
             display.vvvv("nblists: NetBox list url: %s" % url)
