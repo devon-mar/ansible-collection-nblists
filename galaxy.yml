@@ -1,8 +1,9 @@
+---
 # See https://docs.ansible.com/ansible/latest/dev_guide/collections_galaxy_meta.html
 
 namespace: devon_mar
 name: nblists
-version: 0.1.0
+version: 0.2.0
 readme: README.md
 authors:
   - Devon Mar (https://github.com/devon-mar)

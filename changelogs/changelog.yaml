@@ -11,3 +11,10 @@ releases:
         name: list
         namespace: null
     release_date: '2023-05-02'
+  0.2.0:
+    changes:
+      minor_changes:
+      - lists lookup - support using a filter more than once.
+    fragments:
+    - filter-more-than-once.yml
+    release_date: '2023-06-05'
