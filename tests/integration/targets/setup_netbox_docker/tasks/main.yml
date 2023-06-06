@@ -1,6 +1,17 @@
 ---
-- name: Set output dir
-  set_fact:
-    output_dir: "{{ role_path }}/files/output"
+- name: Template docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ files_dir }}/docker-compose.yml"
+  vars:
+    github_docker_network: "{{ lookup('env', 'GITHUB_DOCKER_NETWORK') }}"
 
-- import_tasks: "{{ lookup('env', 'DO_CLEANUP') | bool | ternary('cleanup.yml', 'setup.yml') }}"
+- name: Run docker-compose up -d
+  command:
+    argv:
+      - docker-compose
+      - "-p"
+      - netbox
+      - up
+      - "-d"
+    chdir: "{{ files_dir }}"
