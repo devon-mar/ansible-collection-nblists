@@ -153,3 +153,36 @@
     - assert:
         that:
           - _wrong_token is failed
+
+    - name: Lookup with list filter
+      set_fact:
+        result: "{{ q('devon_mar.nblists.list', 'prefixes', prefix=['192.0.2.0/24', '2001:db8::/32] **kwargs) }}"
+
+    - assert:
+        that:
+          - result | length == 2
+          - "'192.0.2.0/24' in result"
+          - "'2001:db8::/32' in result"
+        fail_msg: "{{ result }}"
+
+    - name: Lookup with tuple filter
+      set_fact:
+        result: "{{ q('devon_mar.nblists.list', 'prefixes', prefix=('192.0.2.0/24', '2001:db8::/32) **kwargs) }}"
+
+    - assert:
+        that:
+          - result | length == 2
+          - "'192.0.2.0/24' in result"
+          - "'2001:db8::/32' in result"
+        fail_msg: "{{ result }}"
+
+    - name: Lookup with set filter
+      set_fact:
+        result: "{{ q('devon_mar.nblists.list', 'prefixes', prefix={'192.0.2.0/24', '2001:db8::/32} **kwargs) }}"
+
+    - assert:
+        that:
+          - result | length == 2
+          - "'192.0.2.0/24' in result"
+          - "'2001:db8::/32' in result"
+        fail_msg: "{{ result }}"
