@@ -59,10 +59,10 @@ jobs:
           # - stable-2.9 # Only if your collection supports Ansible 2.9
           # - stable-2.10 # Only if your collection supports ansible-base 2.10
           # - stable-2.11 # Only if your collection supports ansible-core 2.11
-          - stable-2.12
-          - stable-2.13
           - stable-2.14
           - stable-2.15
+          - stable-2.16
+          - stable-2.17
           - devel
         # - milestone
     # Ansible-test on various stable branches does not yet work well with cgroups v2.
@@ -121,10 +121,10 @@ jobs:
           # - stable-2.9 # Only if your collection supports Ansible 2.9
           # - stable-2.10 # Only if your collection supports ansible-base 2.10
           # - stable-2.11 # Only if your collection supports ansible-core 2.11
-          - stable-2.12
-          - stable-2.13
           - stable-2.14
           - stable-2.15
+          - stable-2.16
+          - stable-2.17
           - devel
         # - milestone
 
@@ -162,38 +162,87 @@ jobs:
           '["stable-2.9", "stable-2.10", "stable-2.11"]'
       ), matrix.ansible) && 'ubuntu-20.04' || 'ubuntu-latest' }}
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
-    services:
-      # So that the GitHub network is created
-      sleep:
-        image: wardsco/sleep
     strategy:
       fail-fast: false
       matrix:
         ansible:
-          # The commented branches below are EOL,
-          # do you really need your collection to support them if it still does?
-          # - stable-2.9 # Only if your collection supports Ansible 2.9
-          # - stable-2.10 # Only if your collection supports ansible-base 2.10
-          # - stable-2.11 # Only if your collection supports ansible-core 2.11
-          - stable-2.12
-          - stable-2.13
-          - stable-2.14
-          - stable-2.15
           - devel
         # - milestone
         python:
-          - "2.7"
-          - "3.6"
           - "3.7"
           - "3.8"
           - "3.9"
           - "3.10"
           - "3.11"
-        exclude:
-          - ansible: stable-2.12
+          - "3.12"
+        include:
+          # Add new versions announced in
+          # https://github.com/ansible-collections/news-for-maintainers in a timely manner,
+          # consider dropping testing against EOL versions and versions you don't support.
+          # ansible-core 2.14
+          - ansible: stable-2.14
+            python: "2.7"
+          - ansible: stable-2.14
+            python: "3.5"
+          - ansible: stable-2.14
+            python: "3.6"
+          - ansible: stable-2.14
+            python: "3.7"
+          - ansible: stable-2.14
+            python: "3.8"
+          - ansible: stable-2.14
+            python: "3.9"
+          - ansible: stable-2.14
+            python: "3.10"
+          - ansible: stable-2.14
             python: "3.11"
-          - ansible: stable-2.13
+          # ansible-core 2.15
+          - ansible: stable-2.15
+            python: "2.7"
+          - ansible: stable-2.15
+            python: "3.5"
+          - ansible: stable-2.15
+            python: "3.6"
+          - ansible: stable-2.15
+            python: "3.7"
+          - ansible: stable-2.15
+            python: "3.8"
+          - ansible: stable-2.15
+            python: "3.9"
+          - ansible: stable-2.15
+            python: "3.10"
+          - ansible: stable-2.15
             python: "3.11"
+          # ansible-core 2.16
+          - ansible: stable-2.16
+            python: "2.7"
+          - ansible: stable-2.16
+            python: "3.6"
+          - ansible: stable-2.16
+            python: "3.7"
+          - ansible: stable-2.16
+            python: "3.8"
+          - ansible: stable-2.16
+            python: "3.9"
+          - ansible: stable-2.16
+            python: "3.10"
+          - ansible: stable-2.16
+            python: "3.11"
+          - ansible: stable-2.16
+            python: "3.12"
+          # ansible-core 2.17
+          - ansible: stable-2.17
+            python: "3.7"
+          - ansible: stable-2.17
+            python: "3.8"
+          - ansible: stable-2.17
+            python: "3.9"
+          - ansible: stable-2.17
+            python: "3.10"
+          - ansible: stable-2.17
+            python: "3.11"
+          - ansible: stable-2.17
+            python: "3.12"
 
     steps:
       - uses: actions/checkout@v3
