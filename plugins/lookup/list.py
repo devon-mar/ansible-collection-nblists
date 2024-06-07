@@ -92,10 +92,9 @@ EXAMPLES = r"""
             aces: "{{ acl_10_aces }}"
 """
 
-import json
 from urllib.parse import urlencode, urljoin
 
-from ansible.errors import AnsibleError, AnsibleParserError
+from ansible.errors import AnsibleError
 from ansible.module_utils._text import to_native
 from ansible.module_utils.urls import open_url
 from ansible.plugins.lookup import LookupBase
@@ -119,7 +118,7 @@ class LookupModule(LookupBase):
         allow_empty = self.get_option("allow_empty_")
         lists_path = self.get_option("lists_path_")
 
-        headers = {"Accept": "application/json"}
+        headers = {"Accept": "text/plain"}
         if netbox_token:
             headers["Authorization"] = "Token %s" % netbox_token
 
@@ -153,19 +152,13 @@ class LookupModule(LookupBase):
                     "Error making request to '%s': %s" % (url, to_native(e))
                 )
 
-            try:
-                parsed = json.loads(response.read())
-            except Exception as e:
-                raise AnsibleParserError(
-                    "Could not parse JSON response for '%s': %s" % (url, to_native(e))
-                )
+            content_type = response.getheader("Content-Type")
+            if not content_type.startswith("text/plain"):
+                raise AnsibleError("Unexpected Content-Type: %s" % content_type)
 
-            if not isinstance(parsed, list):
-                raise AnsibleParserError("Response was not a list for %s" % url)
+            ret.extend(response.read().splitlines())
 
-            if not allow_empty and len(parsed) == 0:
+            if not allow_empty and len(ret) == 0:
                 raise AnsibleError("Got empty list for %s" % url)
-
-            ret += parsed
 
         return ret
