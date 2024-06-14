@@ -1,10 +1,12 @@
 ---
-- name: Run docker-compose down -v
+- name: Run docker compose down -v
   command:
     argv:
-      - docker-compose
+      - docker
+      - compose
       - "-p"
       - netbox
       - down
       - "-v"
     chdir: "{{ files_dir }}"
+  changed_when: true

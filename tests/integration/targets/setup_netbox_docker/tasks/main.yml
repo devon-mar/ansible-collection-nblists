@@ -6,12 +6,14 @@
   vars:
     github_docker_network: "{{ lookup('env', 'GITHUB_DOCKER_NETWORK') }}"
 
-- name: Run docker-compose up -d
+- name: Run docker compose up -d
   command:
     argv:
-      - docker-compose
+      - docker
+      - compose
       - "-p"
       - netbox
       - up
       - "-d"
     chdir: "{{ files_dir }}"
+  changed_when: true
