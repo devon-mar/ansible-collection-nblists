@@ -18,3 +18,10 @@ releases:
     fragments:
     - filter-more-than-once.yml
     release_date: '2023-06-05'
+  0.3.0:
+    changes:
+      minor_changes:
+      - lists lookup - use text format instead of JSON
+    fragments:
+    - use-text-format.yml
+    release_date: '2024-09-09'

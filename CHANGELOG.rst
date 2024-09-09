@@ -4,6 +4,13 @@ NetBox Lists Collection Release Notes
 
 .. contents:: Topics
 
+v0.3.0
+======
+
+Minor Changes
+-------------
+
+- lists lookup - use text format instead of JSON
 
 v0.2.0
 ======
