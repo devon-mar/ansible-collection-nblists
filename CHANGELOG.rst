@@ -4,6 +4,14 @@ NetBox Lists Collection Release Notes
 
 .. contents:: Topics
 
+v0.3.1
+======
+
+Bugfixes
+--------
+
+- lists lookup - decode NetBox response
+
 v0.3.0
 ======
 

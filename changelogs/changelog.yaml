@@ -25,3 +25,10 @@ releases:
     fragments:
     - use-text-format.yml
     release_date: '2024-09-09'
+  0.3.1:
+    changes:
+      bugfixes:
+      - lists lookup - decode NetBox response
+    fragments:
+    - decode_response.yml
+    release_date: '2024-10-20'
