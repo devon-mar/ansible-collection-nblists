@@ -156,7 +156,8 @@ class LookupModule(LookupBase):
             if not content_type.startswith("text/plain"):
                 raise AnsibleError("Unexpected Content-Type: %s" % content_type)
 
-            ret.extend(response.read().splitlines())
+            charset = response.headers.get_content_charset("utf8")
+            ret.extend(response.read().decode(charset).splitlines())
 
             if not allow_empty and len(ret) == 0:
                 raise AnsibleError("Got empty list for %s" % url)
