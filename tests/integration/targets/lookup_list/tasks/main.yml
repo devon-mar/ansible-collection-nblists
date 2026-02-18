@@ -1,8 +1,5 @@
 ---
-- name: Set facts
-  set_fact:
-    netbox_headers:
-      Authorization: "Token {{ netbox_token }}"
+- include_tasks: create_token.yml
 
 - include_tasks: cleanup.yml
   with_items:
