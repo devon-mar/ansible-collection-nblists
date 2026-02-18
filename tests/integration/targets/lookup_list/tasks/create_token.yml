@@ -1,0 +1,22 @@
+---
+- name: Create a token
+  changed_when: true
+  uri:
+    url: "{{ netbox_url }}/api/users/tokens/provision/"
+    method: POST
+    status_code: 201
+    body_format: json
+    return_content: true
+    body:
+      username: admin
+      password: admin
+  register: _create_token
+
+- name: Set netbox_token
+  set_fact:
+    netbox_token: "nbt_{{ _create_token.json.key }}.{{ _create_token.json.token }}"
+
+- name: Set netbox_headers
+  set_fact:
+    netbox_headers:
+      Authorization: "Bearer {{ netbox_token }}"
