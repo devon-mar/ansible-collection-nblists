@@ -140,8 +140,6 @@ jobs:
           # which should improve CI performance. See limitations on
           # https://github.com/ansible-community/ansible-test-gh-action#pull-request-change-detection
           pull-request-change-detection: true
-          # ERROR: Package 'ansible-core' requires a different Python: 3.11.13 not in '>=3.12'
-          origin-python-version: ${{ matrix.ansible == 'devel' && '3.12' || 'auto' }}
 
   ###
   # Integration tests (RECOMMENDED)
@@ -266,9 +264,6 @@ jobs:
           # which should improve CI performance. See limitations on
           # https://github.com/ansible-community/ansible-test-gh-action#pull-request-change-detection
           # pull-request-change-detection: true
-          #
-          # ERROR: Package 'ansible-core' requires a different Python: 3.11.13 not in '>=3.12'
-          origin-python-version: ${{ matrix.ansible == 'devel' && '3.12' || 'auto' }}
 
       - name: Cleanup containers
         run: |
